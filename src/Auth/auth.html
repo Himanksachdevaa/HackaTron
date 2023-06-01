@@ -1,0 +1,353 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>HackaTron'21</title>    
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="new.css">
+    <link rel="stylesheet" href="home.css">
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/7.21.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.21.0/firebase-auth.js"></script>
+    <script src = "newScript.js"></script>
+    
+    <script type="text/javascript"> 
+        function preventBack() { 
+            window.history.forward();  
+        } 
+          
+        setTimeout("preventBack()", 0); 
+          
+        window.onunload = function () { null }; 
+    </script> 
+</head>
+
+<body id = "body" onload="load();">
+    <div id = "mainLoader" style = "display: none;height:100vh;display: none;align-items: center;justify-content: center;">
+    <div class="loader3" ></div>
+</div>
+   <div id = "complete">
+  
+    <div id="container-login">
+        
+        <div id="title">
+            
+            <a href = "../../index.html"><img src="../../cu-logo2.png" style="height: 72px;"></a>
+        </div>
+
+        
+            <div class="input">
+                <div class="input-addon">
+                    <i class="material-icons">email</i>
+                </div>
+                <input id="Email" placeholder="Email" type="text" required class="validate" autocomplete="off">
+            </div>
+
+            <div class="clearfix"></div>
+
+            <div class="input">
+                <div class="input-addon">
+                    <i class="material-icons">vpn_key</i>
+                </div>
+                
+                <input id="Password" placeholder="Password" type="password" required class="validate" autocomplete="off">
+            </div>
+            <p id = "emailVarification" style = "display: none;">Email not verified please verify, <a href = "#" onclick="varification()">Send verification </a></p>
+
+            <div class="remember-me">
+                
+            </div>
+            <div id = "loader" class="loader" style = "display: none;margin-left: 47%;"></div>
+            <input id = "signIn" onclick = "SignIn()" style= "margin: 5% 5%;" type="submit" value="Login">
+
+            <!-- <button  id = "signIn">Login</button> -->
+        
+        
+
+        <div class="forgot-password">
+            <a href="./resetPassword.html" target = "_blank">Forgot your password?</a>
+        </div>
+        
+
+        <div class="register">
+            Don't have an account yet?
+            <a href="./register.html"><button id="register-link">Register here</button></a>
+        </div>
+        
+        
+    </div>
+
+    <div id="user_div" class="loggedin-div" style="display: none;" >
+        <ul>
+            
+            <img src="../../cu-logo2.png" style="height: 88px;margin:15px">
+            <li><a class="active"id = "d" href="#dashboard" onclick="switchHandler('dasboard')">Dashboard</a></li>
+            <li><a href="#application" id = "a" onclick="switchHandler('application');submissionHandler()">Application</a></li>
+            <li><a href="#team" id = "t" onclick="switchHandler('team');checkHandler();">Team</a></li>
+            <!-- <li id = "godMode" style = "display: none;"><a href="#Admin" id = "A" onclick="switchHandler('Admin');">Admin</a></li> -->
+            <li><a onclick="logout()">Logout</a></li>
+
+            
+          </ul>
+          
+          <div id = "dasboard" style="margin-left:25%;padding:1px 16px;height:1000px; ">
+            <h2 style = "text-align: center; color:#47349b;font-weight:900; font-size: 50px;"><strong>DASHBOARD</strong></h2>
+            <div style="display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-top: 10%;">
+            <div class="card" style="align-self: center;">
+                <div class="container">
+                    <h4 style="text-align: center; color:#47349b"><b>Your Status:</b></h4> 
+                    <div style = "display: flex;width:100%; height: 53px; background-color: blanchedalmond;align-items: center;justify-content: center;margin:0%">
+                        <p  style="text-align: center; color:black;"><span id = "status"></span></p> 
+                    </div>
+                    <div class="devicer"></div>
+                    <div style="display:flex;align-content: center;justify-content: center;">
+                        <h5 >Welcome back, </h5>&nbsp;<h5 id = "displayUser"></h5>
+                    </div>
+                    <p id = "displayStatusDis">Last date for registration and team formation is 15<sup>th</sup> September 2021</p>
+                    <div style = "display: flex;margin-bottom: 3%;">
+                        <button class = "ui pink button"><a style = "color: white;text-decoration: none;" href="#team" onclick="switchHandler('team');checkHandler();">View your team</a></button>
+                        <button class = "ui purple button"><a style = "color: white;text-decoration: none;" href="#application" onclick="switchHandler('application')">View your application</a></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+           
+          </div>
+
+        <div id = "application" style="margin-left:25%;padding:1px 16px;height:1000px; display: none;">
+            <h2 style = "text-align: center; color:#47349b;font-weight:900; font-size: 50px;"><strong>Application</strong></h2>
+            
+            <h4 style = "text-align: center; color:black;font-weight:900; font-size: 25px;" id = "startInfo"></h4>
+
+            
+                
+           
+                <div style="display: none;
+                align-items: center;
+                justify-content: center;
+                padding-top: 10%;" id = "submissionOne">
+                   <h7 style = "text-align: center; color:black;font-weight:900; font-size: 20px;margin-bottom: 1%;" >Note: Please note that once you have submited the idea you won't be able to edit it</h7>
+        
+                    <div class="card5" style="align-self: center;margin-bottom: 3%;">
+                        
+                        <div class="container">
+                            <h4>Select problem statement you will be working on:</h4>
+                            <div style = "display: block">
+                                <label class="container">Data Structure 
+                                    <input onclick="displayProblem()"   type="radio" checked="checked" name="radio" value = "Data Structure" id = "Data Structure">
+                                    <span class="checkmark"></span>
+                                  </label>
+                                  <label class="container">Problem Solving & Algorithm
+                                    <input onclick="displayProblem()" type="radio" name="radio" value = "Problem Solving & Algorithm" id = "Problem Solving & Algorithm">
+                                    <span class="checkmark"></span>
+                                  </label>
+                                  <label class="container">Artficial Intelligence
+                                    <input onclick="displayProblem()" type="radio" name="radio" value = "Artficial Intelligence" id = "Artficial Intelligence">
+                                    <span class="checkmark"></span>
+                                  </label>
+                                
+                                  <label class="container">Connected Platform 
+                                    <input onclick="displayProblem()" type="radio" name="radio" value = "Connected Platform" id = "ConnectedPlatform">
+                                    <span class="checkmark"></span>
+                                  </label>
+                            </div>
+                            <div id = "Data Structure" style = "display: none;background-color: rgb(233, 236, 239);padding: 1% 5%;">
+                                <h4>Problem Statement:</h4>
+                                <p>Write the C program to insert a node in circular singly list at the beginning.
+                                </br></br>
+                                    
+                        
+                            </div>
+                            <div id = "InstrumentClusterStackbasedonRealtimeOSproblem" style = "display: none;background-color: rgb(233, 236, 239);padding: 1% 5%;">
+                                <h4>Problem Statement:</h4>
+                                <p>Create an empty Trie and insert all words of given dictionary into the Trie.
+                                    After that, we have pick only those characters in ‘Arr[]’ which are a child of the root of Trie.
+                                    To quickly find whether a character is present in array or not, we create a hash of character arrays.
+                                </p>
+                            
+                            <div id = "Problem Solving & Algorithm" style = "display: none;background-color: rgb(233, 236, 239);padding: 1% 5%;">
+                                <h4>Problem Statement:</h4>
+                                <p>Let us consider the following problem to understand Binary Indexed Tree.
+
+                                    We have an array arr[0 . . . n-1]. We would like to
+                                    1 Compute the sum of the first i elements.
+                                    2 Modify the value of a specified element of the array arr[i] = x where 0 <= i <= n-1.
+                                   
+
+                            
+                            </div>
+                            <div id = "Artficial Intelligence" style = "display: none;background-color: rgb(233, 236, 239);padding: 1% 5%;">
+                                <h4>Problem Statement:</h4>
+                                <p>How can I formulate the k-knights problem as a constraint satisfaction problem?
+
+                                    
+                                          
+                                    </div>
+
+                            </div>
+
+
+
+
+
+
+
+
+
+
+                        
+                           
+                            <textarea placeholder="Mention your Idea" rows="20" name="comment[text]" id="comment_textSecond" cols="40" class="ui-autocomplete-input" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true"></textarea>
+                            
+
+                            
+                            <div id = "removeSaveSubmitSecond"style = "display: flex; margin-top: 3%;">
+                                <button class = "ui  button" style = "width:18%;height:54%; color: white;text-decoration: none;margin:3% 62% ;background-color: #0275d8;   "  onclick="submissionSubmitHandlerSecond()">Save</button>
+                                <button class = "ui purple button" style = "width:18%;height:54%; color: white;text-decoration: none;margin:3% -60% ;background-color: #5cb85c  !important;"  onclick="frezeHandlerSecond()">Submit</button>
+                            </div>
+
+                            
+                        </div>
+                    </div>   
+
+         
+                </div> 
+                <button id = "addSub" class = "ui purple button" style = "width:11%; color: white;text-decoration: none;margin:3% 84%"  onclick="addSubmission()">Add</button>
+                <button id = "removeSub" class = "ui purple button" style = "width:11%; color: white;text-decoration: none;margin:3% 84% ;display:none;background-color: #5bc0de   !important;"  onclick="removeSubmission()">Hide</button>
+
+           
+          </div>
+
+          <div id = "team" style="margin-left:25%;padding:1px 16px;height:1000px; display: none;">
+            <h2 style = "text-align: center; color:#47349b;font-weight:900; font-size: 50px;"><strong>TEAM</strong></h2>
+            
+            <p style = "text-align: center; color:black;padding-top: 7%; font-size: 17px;" id = "teamMsg">You can create or join a team for participation. Thus all members of a team will be selected or rejected together.</p>
+                <div id = "loaderTeamStatus" class="loader2" style = "display: none;margin-left: 50%;margin-top: 10%;"></div>
+                <div id = "TeamJoin">
+            
+                <div id = "createJoin" style = "margin: 0 10% 10% 10%;display: none;">
+                    <div class="tab">
+                        <button class="tablinks" onclick="openCity(event, 'London')">Create</button>
+                        <button class="tablinks" onclick="openCity(event, 'Paris')">Join</button>
+                    </div>
+                    
+                    <div id="London" class="tabcontent">
+                        <div id = "inputTeamNameDiv" style="display: grid;justify-content: center;">
+                            <h3 style = "text-align: center;color: black;">Enter Team Name:</h3>
+                            
+                            <input  style = " background-color: white;align-self: center;" required  type="text" id="teamName" name="teamName" placeholder="Team name">
+                            <div id = "loader" class="loader" style = "display: none;margin-left: 42%;"></div>
+                            <input id = "teamSubmitBtn" onclick = "teamNameHandler()"  style= "margin-top: 7%;display: block;" type="submit" value="Submit">
+                        </div>
+                        <!-- <div id = "teamDetialDiv" style="display: none;justify-content: center;">
+                            <h3 style = "text-align: center;">Team Name:</h3>
+                            <h3 id = "newTeamName" style = "text-align: center;"></h3>
+
+                            <h5 style = "text-align: center;">Team Code:</h5>
+                            <h3 style = "text-align: center;">Team Members:</h3>
+
+                        </div> -->
+
+                    </div>
+                    
+                    <div id="Paris" class="tabcontent">
+                        <div id = "inputTeamNameDiv" style="display: grid;justify-content: center;">
+                            <h3 style = "text-align: center;color: black;">Enter Team Code:</h3>
+                            
+                            <input  style = " background-color: white;align-self: center;" required type="text" id="teamCode" name="teamName" placeholder="Team code">
+                            <div id = "loader" class="loader" style = "display: none;margin-left: 42%;"></div>
+                            <input id = "teamSubmitBtn" onclick = "teamJoinHandler()" style= "margin-top: 7%;display: block;" type="submit" value="Submit">
+                        </div> 
+                    </div>
+                </div>
+
+                <div style="display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        ">
+                    <div id = "TeamStatus" class="card2" style="align-self: center;display: none;padding-bottom: 1%;">
+                    
+                            <div class="container">
+                                <h4 style="text-align: center; color:#47349b"><b>Team Name:</b></h4>
+                                <p  style="text-align: center; color:black"><span id = "teamNameLoad"></span></p> 
+                                <h4 style="text-align: center; color:#47349b"><b>Team Code:</b></h4>
+                                <h5 id = "teamUniqueCode" style = "text-align: center;"></h5>
+                                <h4 style="text-align: center; color:#47349b"><b>Team Members:</b></h4>
+
+                                <div id="memberName"style = "text-align: center;padding-bottom: 3%;"></div>
+
+                                
+                                <button onclick="leaveTeamHandler()"  class='ph-button ph-btn-red' id = "hideLeave">Leave</button>
+
+
+                            </div>
+
+                    </div>
+                </div>
+
+
+            </div>
+                
+          </div>
+        
+
+
+
+          
+        
+        
+    </div> 
+          
+        
+        
+</div>
+        
+        
+      
+    
+ 
+<script>
+    function openCity(evt, cityName) {
+      var i, tabcontent, tablinks;
+      tabcontent = document.getElementsByClassName("tabcontent");
+      for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+      }
+      tablinks = document.getElementsByClassName("tablinks");
+      for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+      }
+      document.getElementById(cityName).style.display = "block";
+      evt.currentTarget.className += " active";
+    }
+    </script>
+    <!-- <script>
+        function openCity(evt, cityName) {
+          var i, tab_content, tab_links;
+          tab_content = document.getElementsByClassName("tab_content");
+          for (i = 0; i < tab_content.length; i++) {
+            tab_content[i].style.display = "none";
+          }
+          tab_links = document.getElementsByClassName("tab_links");
+          for (i = 0; i < tab_links.length; i++) {
+            tab_links[i].className = tab_links[i].className.replace(" active", "");
+          }
+          document.getElementById(cityName).style.display = "block";
+          evt.currentTarget.className += " active";
+        }
+        </script> -->
+<script>
+        window.addEventListener("load", function () {
+    const loader = document.querySelector(".loader");
+    loader.className += " hidden"; // class "loader hidden"
+});
+    </script>
+  
+</body>
+
+</html>
